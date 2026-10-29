@@ -8,7 +8,8 @@
     "build": "next build",
     "start": "next start",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
-    "check:bundle": "node scripts/check-bundle.mjs"
+    "check:bundle": "node scripts/check-bundle.mjs",
+    "config:to-prod": "node --env-file=.env.local scripts/config-to-prod.mjs"
   },
   "dependencies": {
     "next": "15.5.28",

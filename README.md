@@ -86,6 +86,16 @@ npm test && npm run build
 
 `port-client.py` stops with `PORT FAILED` if the artifact changed where a patch applies; fix the matching `R(...)` line.
 
+## Copying characters/questions from Test to Production
+
+Edit in `/admin` locally (Test sheet), then copy the whole **Config** tab to the Production sheet in one go:
+
+```bash
+npm run config:to-prod
+```
+
+It overwrites only Production's Config tab (draft + live); results are untouched. The live site picks it up on the next page load.
+
 ## Security checks
 
 ```bash
