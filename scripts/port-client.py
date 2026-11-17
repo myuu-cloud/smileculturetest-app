@@ -1,5 +1,5 @@
 # One-time port of the artifact quiz (index.html) to the Vercel app client (public/app.html).
-# Re-run after a Studio sync of the artifact: python3 scripts/port-client.py <artifact index.html> public/app.html
+# Re-run after a Studio sync of the artifact (on Windows: python -X utf8 ...): python3 scripts/port-client.py <artifact index.html> public/app.html
 import sys
 src, dst = sys.argv[1], sys.argv[2]
 s = open(src, encoding='utf8').read()
@@ -113,7 +113,7 @@ a = s.index("renderHome();\n(async()=>{\n [db,user,sample,downloads]"); b = s.in
 s = s[:a] + r"""// ---------- server bridge (stands in for the artifact runtime: identity, data, AI, downloads)
 async function API(path,body,method){const r=await fetch(path,{method:method||(body?'POST':'GET'),headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,credentials:'same-origin'});
  const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||String(r.status)),{status:r.status,code:j.code});return j}
-let ME={signedIn:false};
+let ME={signedIn:false};window.SHARE_URL=location.origin+"/quiz";
 const dbBridge={doc:p=>({async get(){const j=await API(p==='cfg/live'?'/api/config':'/api/admin/config');return{exists:!!j.config,data:()=>j.config}},
  async set(d){if(p==='cfg/live')return API('/api/admin/publish',{config:d});if(p==='cfg/draft')return API('/api/admin/config',{config:d},'PUT');throw new Error('unsupported '+p)}})};
 const sampleBridge={async json(prompt){let t;try{t=(await API('/api/admin/ai',{prompt})).text||''}catch(e){throw Object.assign(e,{code:e.status===429?'rate_limited':'unavailable'})}

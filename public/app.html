@@ -1,4 +1,5 @@
 <!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>smileCULTURE Quiz</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -122,7 +123,7 @@ blockquote{margin:6px 0 0;font-size:15.5px;color:var(--muted);border-left:3px so
 .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .panel ul{margin:0;padding-left:20px;display:grid;gap:6px}
 .bars{display:grid;gap:10px}
-.brow{display:grid;grid-template-columns:220px 1fr 64px;gap:12px;align-items:center;font-size:13.5px}
+.brow{display:grid;grid-template-columns:220px 1fr 76px;gap:12px;align-items:center;font-size:13.5px}
 .brow .nm{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brow .tr{height:12px;border-radius:9px;background:var(--sunk);overflow:hidden}
 .brow .tr span{display:block;height:100%;border-radius:9px;background:var(--c);width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
@@ -234,7 +235,7 @@ textarea.tpl{width:100%;min-height:120px;font:12px/1.5 var(--f-mono);border:1.5p
 #toast{z-index:60!important;position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--ink);color:var(--bg);padding:12px 18px;border-radius:14px;font-size:14px;font-weight:600;z-index:20;max-width:calc(100vw - 32px);box-shadow:var(--shadow)}
 @media (max-width:760px){
  .stage{height:300px}.hero-stage .stage{height:330px}.res-head{grid-template-columns:1fr}.res-stage{height:360px}.res-title{text-align:left}
- .opts,.two,.fgrid,.org{grid-template-columns:1fr}.brow{grid-template-columns:1fr 60px;gap:4px 10px}.brow .nm{grid-column:1/-1}
+ .opts,.two,.fgrid,.org{grid-template-columns:1fr}.brow{grid-template-columns:1fr 72px;gap:4px 10px}.brow .nm{grid-column:1/-1}
  .kpis{grid-template-columns:1fr 1fr}.q{padding:18px 16px 14px}.slider .knob{width:92px}.slider .knob{left:calc(6px + (var(--v) + 3) / 6 * (100% - 104px))}
 }
 
@@ -276,6 +277,14 @@ html.studio-open,html.studio-open body{overflow:hidden}
 .seg button.on b{color:var(--accent)}
 .qa .kth{font-size:12px;color:var(--muted);font-weight:600}
 @media (max-width:520px){.seg{grid-template-columns:1fr}}
+.cardDlg{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}.cardDlg[hidden]{display:none}
+.cardDlg .sbg{position:absolute;inset:0;background:#2d2b2840;backdrop-filter:blur(3px)}
+.cardDlg .cpanel{position:relative;width:min(420px,100%);max-height:calc(100dvh - 32px);overflow-y:auto;background:var(--surface);border-radius:24px;box-shadow:var(--shadow);padding:18px;display:grid;gap:12px}
+.cardDlg .ph{display:flex;justify-content:space-between;align-items:center}.cardDlg h3{font-size:18px}.cardDlg .x{border:0;background:none;font-size:20px;color:var(--muted);cursor:pointer;padding:2px 6px;border-radius:8px}
+.cardDlg .cprev{display:grid;place-items:center;aspect-ratio:9/16;max-height:58dvh;margin:0 auto;width:100%;max-width:calc(58dvh * 9 / 16);border-radius:16px;overflow:hidden}
+.cardDlg .cprev img{width:100%;height:100%;object-fit:contain;grid-area:1/1}.cardDlg .cprev img:not([src]){display:none}.cardDlg .spin{grid-area:1/1;width:28px;height:28px}.cardDlg .spin[hidden]{display:none}
+.cardDlg .cbtns{display:grid;grid-template-columns:1fr 1.4fr;gap:8px}.cardDlg .cbtns .btn{padding:13px 10px;font-size:14px}.cardDlg .note{text-align:center}
+@media (max-width:420px){.cardDlg .cbtns{grid-template-columns:1fr}}
 /*STUDIO-PANEL-CSS-START*/
 #stPaint .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
 #stPaint h3{margin:0;font-size:21px;letter-spacing:-.02em;color:#2d2b28}
@@ -466,7 +475,7 @@ details.cvr .chev{color:var(--muted);font-size:12px}details.cvr[open] .chev{tran
   <div class="two"><section class="panel"><h2>จุดแข็ง</h2><ul id="rStr"></ul></section><section class="panel"><h2>เรื่องที่ลองพัฒนาได้</h2><ul id="rWatch"></ul></section></div>
   <section class="panel" id="rRel"><h2>คู่หู และ คู่กัด ของคุณ</h2><div class="rel-grid" id="rRelGrid"></div><details class="how"><summary>คิดมาจากอะไร</summary><div id="rHow"></div></details></section>
   <section class="panel"><h2>ในองค์กรมีคนแบบคุณแค่ไหน</h2><div id="rOrg"></div></section>
-  <div class="res-actions"><button id="saveCard" class="btn primary" hidden>บันทึกการ์ดผลลัพธ์</button><button id="retake" class="btn quiet">ทำแบบทดสอบใหม่</button><button id="toHome" class="btn quiet">ดูตัวละครทั้งหมด</button></div>
+  <div class="res-actions"><button id="saveCard" class="btn primary">📸 บันทึกภาพ & แชร์</button><button id="retake" class="btn quiet">ทำแบบทดสอบใหม่</button><button id="toHome" class="btn quiet">ดูตัวละครทั้งหมด</button></div>
   <p class="note" id="rNote"></p>
  </div>
 </section>
@@ -495,6 +504,7 @@ details.cvr .chev{color:var(--muted);font-size:12px}details.cvr[open] .chev{tran
  <aside class="st-paint st-info" id="stInfo" aria-label="ข้อมูลตัวละคร" hidden></aside>
  <div id="stSceneDlg" class="st-scdlg" hidden><div class="sbg"></div><section class="spanel" role="dialog" aria-modal="true" aria-labelledby="stScTtl"><div class="ph"><h3 id="stScTtl">🏢 เลือกฉาก</h3><button class="x" id="stScX" aria-label="ปิด">✕</button></div><p class="desc">ฉากนี้ใช้กับรูปหมู่หน้าแรก หน้าผล และสตูดิโอ เปลี่ยนแล้วบันทึกลงร่าง กดเผยแพร่เพื่อให้พนักงานเห็น</p><div id="stScTiles"></div></section></div>
 </section>
+<div id="cardDlg" class="cardDlg" hidden><div class="sbg"></div><section class="cpanel" role="dialog" aria-modal="true" aria-labelledby="cardTtl"><div class="ph"><h3 id="cardTtl">การ์ดผลลัพธ์ของคุณ</h3><button class="x" id="cardX" aria-label="ปิด">✕</button></div><div class="cprev"><span id="cardBusy" class="spin" hidden></span><img id="cardImg" alt="การ์ดผลลัพธ์ขนาด Story"></div><div class="cbtns"><button id="cardSave" class="btn quiet">⬇ บันทึกลงเครื่อง</button><button id="cardShare" class="btn primary">↗ แชร์ไป IG Story / Facebook</button></div><p class="note">ขนาด 1080×1920 พอดี Story · บนมือถือ กดแชร์แล้วเลือก Instagram หรือ Facebook ได้เลย</p></section></div>
 <div id="toast" role="status" hidden></div>
 
 <script>
@@ -582,7 +592,7 @@ const clamp=(v,a,b)=>Math.max(a,Math.min(b,v)),lerp=(a,b,v)=>a+(b-a)*v,smooth=(a
 const SEQ=['idle','signature','celebrate'],DUR=[2.6,3.6,2.6],TOTAL=DUR.reduce((a,b)=>a+b,0);
 function phaseAt(t,motion){if(motion!=='story')return{name:motion,p:(t%4)/4,i:SEQ.indexOf(motion)};let x=t%TOTAL;for(let j=0;j<3;j++){if(x<DUR[j])return{name:SEQ[j],p:x/DUR[j],i:j};x-=DUR[j]}return{name:'idle',p:0,i:0}}
 function makeFelt(canvas){
-/* ---- Culture 8 Felt Studio, synced by tools/sync_studio.py (studio sha c7f6e757b6) ---- */
+/* ---- Culture 8 Felt Studio, synced by tools/sync_studio.py (studio sha 8752c757c8) ---- */
 const params=new URLSearchParams('');const EDIT={c:null,root:null};let cur=0;
 const $=id=>id==='paint'?EDIT.root:((EDIT.root&&EDIT.root.querySelector('#'+id))||document.getElementById(id));
 const gl=canvas.getContext('webgl',{alpha:true,antialias:true,preserveDrawingBuffer:true});
@@ -650,7 +660,10 @@ function nMat(m){const a=m[0],b=m[1],c=m[2],d=m[4],e=m[5],f=m[6],g=m[8],h=m[9],i
 // ---------- geometry
 let GEO_TRACK=null;const freeGeos=L=>{for(const g of L||[]){gl.deleteBuffer(g.v);gl.deleteBuffer(g.n);gl.deleteBuffer(g.idx);if(g.w)gl.deleteBuffer(g.w);if(g.c)gl.deleteBuffer(g.c)}};
 const AUDIT_GEO=/[?&]audit/.test(location.search);
-function geo(v,n,ix,vcol){const b=x=>{const k=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,k);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(x),gl.STATIC_DRAW);return k};const id=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,id);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(ix),gl.STATIC_DRAW);const r={v:b(v),n:b(n),idx:id,count:ix.length};{const st=Math.max(1,Math.floor(v.length/3/48));r.pts=[];for(let i=0;i<v.length/3;i+=st)r.pts.push([v[i*3],v[i*3+1],v[i*3+2]])}if(vcol)r.c=b(vcol);if(AUDIT_GEO)r.cpu={v,ix};if(GEO_TRACK)GEO_TRACK.push(r);return r}
+function geo(v,n,ix,vcol){const b=x=>{const k=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,k);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array(x),gl.STATIC_DRAW);return k};const id=gl.createBuffer();gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER,id);gl.bufferData(gl.ELEMENT_ARRAY_BUFFER,new Uint16Array(ix),gl.STATIC_DRAW);const r={v:b(v),n:b(n),idx:id,count:ix.length};{const st=Math.max(1,Math.floor(v.length/3/48));r.pts=[];for(let i=0;i<v.length/3;i+=st)r.pts.push([v[i*3],v[i*3+1],v[i*3+2]])}
+
+ // r.hi: top-surface points (upper 30% of the mesh), for finding where something can sit
+ {let y0=1e9,y1=-1e9;for(let i=1;i<v.length;i+=3){y0=Math.min(y0,v[i]);y1=Math.max(y1,v[i])}const th=y1-.3*(y1-y0),H=[];for(let i=0;i<v.length;i+=3)if(v[i+1]>=th)H.push([v[i],v[i+1],v[i+2]]);const st2=Math.max(1,Math.ceil(H.length/300));r.hi=H.filter((_,i)=>i%st2===0)}if(vcol)r.c=b(vcol);if(AUDIT_GEO)r.cpu={v,ix};if(GEO_TRACK)GEO_TRACK.push(r);return r}
 function sphereG(U=42,V=30){const p=[],n=[],ix=[];for(let j=0;j<=V;j++){const ph=Math.PI*j/V;for(let i=0;i<=U;i++){const th=i*2*Math.PI/U,x=Math.sin(ph)*Math.sin(th),y=Math.cos(ph),z=Math.sin(ph)*Math.cos(th);p.push(x,y,z);n.push(x,y,z)}}for(let j=0;j<V;j++)for(let i=0;i<U;i++){const a=j*(U+1)+i,b=a+U+1;ix.push(a,b,a+1,b,b+1,a+1)}return geo(p,n,ix)}
 function coneG(U=22){const p=[],n=[],ix=[];for(let i=0;i<=U;i++){const a=i*2*Math.PI/U,x=Math.sin(a),z=Math.cos(a);p.push(x,-1,z,0,1,0);n.push(x,.4,z,x,.4,z)}for(let i=0;i<U;i++){const k=i*2;ix.push(k,k+2,k+1)}return geo(p,n,ix)}
 function sweepG(nodes,radii,sides=12){const p=[],n=[],ix=[];for(let j=0;j<nodes.length;j++){const a=nodes[Math.max(0,j-1)],b=nodes[Math.min(nodes.length-1,j+1)],t=nrm(sub(b,a)),ref=Math.abs(t[2])>.9?[0,1,0]:[0,0,1],u=nrm(cross(t,ref)),v=nrm(cross(t,u));for(let k=0;k<=sides;k++){const an=k*2*Math.PI/sides,c=Math.cos(an),s=Math.sin(an),rd=[u[0]*c+v[0]*s,u[1]*c+v[1]*s,u[2]*c+v[2]*s];p.push(...nodes[j].map((e,i)=>e+rd[i]*radii[j]));n.push(...rd)}}for(let j=0;j<nodes.length-1;j++)for(let k=0;k<sides;k++){const a=j*(sides+1)+k,b=a+sides+1;ix.push(a,a+1,b,a+1,b+1,b)}return geo(p,n,ix)}
@@ -3008,7 +3021,7 @@ PROPS.parrot=function(k){const R='bird';   // colourful parrot circling above th
  k.ball('#3fae5a',0,0,0,.18,.22,.18,R,.9);k.ball('#e5533d',0,.22,.06,.15,.15,.15,R,.9);k.ball('#fbf8f2',0,.22,.17,.07,.06,.04,R,.6);
  k.add(CONE,'#2b2b2b',C_(T(0,.18,.23),RX(2.3),S(.04,.08,.04)),R,.3);k.add(CONE,'#f6c84b',C_(T(0,.2,.22),RX(1.9),S(.045,.07,.045)),R,.3);
  for(const s2 of[-1,1]){k.ball('#fbf8f2',s2*.115,.25,.14,.045,.05,.03,R,.2);k.ball('#2a2226',s2*.125,.255,.165,.024,.028,.014,R,0);k.rball('#2f6fd6',s2*.15,-.02,-.02,.07,.17,.14,s2*.25,R,.9);k.rball('#f6c84b',s2*.14,.06,.02,.05,.07,.08,s2*.25,R,.9)}
- k.sweep('#e5533d',[[0,-.15,-.1],[0,-.35,-.22],[0,-.5,-.3]],[.06,.05,.02],R);k.sweep('#2f6fd6',[[.04,-.15,-.1],[.05,-.33,-.2]],[.04,.015],R)};
+ k.sweep('#e5533d',[[0,-.1,-.12],[0,-.17,-.34],[0,-.2,-.52]],[.06,.05,.02],R);k.sweep('#2f6fd6',[[.04,-.1,-.12],[.05,-.16,-.32]],[.04,.015],R)};   // tail sweeps back, not down, so it clears the head when perched
 const BOWLG2=latheG([[0,0],[.18,0],[.3,.12],[.36,.32],[.33,.52],[.24,.62],[.26,.65]],48),WATERG=latheG([[0,.02],[.17,.02],[.28,.13],[.33,.32],[.31,.48],[0,.48]],48);
 const FISHB=()=>C_(U(.06,-1.22,.42,.85),RZ(-.4));
 PROPS.fishbowl=function(k){const R='palmL',B=S(.8,.8,.8),A=(g,c,m,f=.4,op)=>{const o=k.add(g,c,C_(B,m),R,f);if(op)o.opacity=op;return o};   // goldfish bowl held in front of the chest, two fish circling
@@ -3212,7 +3225,7 @@ function buildObjs(c,over,style){const ov=over||{};let st=DEBUG_BODY?{top:'mod13
  // HAND STATE (selected fresh on every build — never inherited): pose's explicit state > grip for a held prop > relaxed
  const heldL=props.some(p=>LEFT_PROPS.has(p))&&!(PZ&&PZ.h.includes('L')),heldR=props.some(p=>RIGHT_PROPS.has(p))&&!(PZ&&PZ.h.includes('R'));
  const HS={L:(PZ&&PZ.hs&&PZ.hs.L)||(heldL?(props.some(p=>GRIP_PT[p])?'fist':'grip'):'relaxed'),R:HAND_BAGS.has(d.bagKind)?'fist':(st.pet==='hamster'||st.pet==='turtle')&&!(PZ&&PZ.h.includes('R'))?'open':(PZ&&PZ.hs&&PZ.hs.R)||(heldR?'grip':'relaxed')};d._handState=HS;
- {let cr=1.25;for(const o of k.objs){if(o.rig!=='head'||(o.geo!==SPH&&o.geo!==SOFT))continue;const m=o.transform;if(Math.abs(m[12])>.45||m[14]<-.7)continue;cr=Math.max(cr,m[13]+Math.hypot(m[4],m[5],m[6])*.92)}d._crown=cr}   // top of hair / hat, where a bird can land
+ {let cr=-9;for(const o of k.objs){if(o.rig!=='head'||o.opacity<.5||!o.geo.hi)continue;const P=o.geo.hi.map(q=>apM(o.transform,q));let x0=9,x1=-9,top=-9;for(const p of P){x0=Math.min(x0,p[0]);x1=Math.max(x1,p[0]);if(Math.abs(p[0])<.12&&Math.abs(p[2]-.04)<.2)top=Math.max(top,p[1])}if(x1-x0>.3)cr=Math.max(cr,top)}d._crown=cr>-9?cr:1.25}   // top of the hair / hat right under the bird's feet (broad surfaces only, so a thin tuft or clip is ignored)
  try{smoothLimbs(k,d,HS)}catch(e){console.warn('smoothLimbs',e)}
  if(!PZ||!PZ.h.includes('L'))attachHeldProps(k,d,PR);
  if(PZ)gestureExtras(k,d,PZ);
@@ -3351,7 +3364,7 @@ function pose(c,t,ph,motion){
  const pk2=c.petKind||'',HANDPET=pk2==='hamster'||pk2==='turtle',FLY=pk2==='bird'||pk2==='parrot';let bird;
  if(FLY){const per=13,u=(t+(pk2==='parrot'?6.5:0))%per,fa=t*(pk2==='parrot'?1.05:1.3),fr=1.45,fy=5.35+.12*Math.sin(t*2.6),
    flyM=C_(body,T(Math.sin(fa)*fr,fy,Math.cos(fa)*fr),RY(fa+Math.PI/2),RZ(-.32),RX(.08*Math.sin(t*9)),S(1.3,1.3,1.3)),   // circling well above the head
-   sitM=C_(hd,T(0,c.d._crown||1.3,.04),S(1.3/hs,1.3/hs,1.3/hs),T(0,pk2==='parrot'?.2:.19,0),RX(.04*Math.sin(t*3))),   // feet on the very top centre of the head (moves with the head)
+   sitM=C_(hd,T(0,c.d._crown||1.3,.04),S(1.3/hs,1.3/hs,1.3/hs),T(0,pk2==='parrot'?.19:.14,0),RX(.04*Math.sin(t*3))),   // settled on the very top centre of the head: belly resting on the hair/hat, feet tucked in (moves with the head)
    w=u<6?0:u<7.4?smooth(6,7.4,u):u<12?1:1-smooth(12,13,u),hop=(u>6&&u<7.4)||u>12?.35*Math.sin(Math.PI*(u<12?(u-6)/1.4:u-12)):0;
   bird=flyM.map((v,i)=>v+(sitM[i]-v)*w);bird[13]+=hop}   // glide down to land, sit, then take off again
  else if(HANDPET)bird=C_(palmR,RY(pk2==='turtle'?.15*Math.sin(t*.6):.2*Math.sin(t*.9)),S(.82,.82,.82),T(0,pk2==='turtle'?.078:.17,0));   // underside resting on the upturned right palm (offset = distance from the pet's origin to its belly/feet)
@@ -4192,10 +4205,15 @@ function computeScores(att){const ids=CFG.cultures.map(c=>c.id),s={},s3={},s2={}
    tie={with:g.slice(1),by,full:g.slice(1).filter(x=>key[x].join()===a.join())}}});
  const pts={},full={};ids.forEach(i=>{pts[i]=s[i];full[i]=max[i]});
  return{rank:groups.flat(),pct,m,tie,pts,full}}
+const fmtPct=v=>Math.round(+v||0)+'%';
+// every culture tied with the runner-up on points is part of the 'heart' line, so equal scores are never shown as one winner
+function heartIds(sc,rank){if(rank.length<2)return[];const r=rank[1],eq=id=>sc.pct[id]===sc.pct[r]&&(!sc.pts||sc.pts[id]===sc.pts[r]);return rank.slice(1).filter(eq).slice(0,3)}
+const andList=a=>a.length<2?a.join(''):a.slice(0,-1).join(', ')+' และ '+a[a.length-1];
 function relationsOf(sc,rank){const main=rank[0],others=rank.slice(1);if(!sc.m||!sc.m[main]||!others.length)return{};
  const mg=x=>sc.m[main][x]||0;
  const buddy=others.slice().sort((a,b)=>mg(a)-mg(b)||sc.pct[b]-sc.pct[a])[0];
- const rival=others.filter(x=>x!==buddy).sort((a,b)=>mg(b)-mg(a)||sc.pct[a]-sc.pct[b])[0];
+ const hs=heartIds(sc,rank);   // a culture in the 'heart' line can't also be the one you give up most easily
+ const rival=others.filter(x=>x!==buddy&&!hs.includes(x)).sort((a,b)=>mg(b)-mg(a)||sc.pct[a]-sc.pct[b])[0];
  return{buddy,rival,mg}}
 async function finishQuiz(){const sc=computeScores(attempt);ls.set('cq-last',{v:CFG.version,scores:sc,at:Date.now()});ls.set('cq-pending',{att:attempt,v:CFG.version});ls.del(attemptKey());attempt=null;
  showResult(sc,true)}
@@ -4207,10 +4225,10 @@ async function showResult(sc,fresh){lastResult=sc;show('vResult');
  const main=cu(rank[0]),sub=cu(rank[1])||main,low=cu(rank[rank.length-1]);
  document.documentElement.style.setProperty('--accent',main.color);$('vResult').style.setProperty('--sub',sub.color);
  $('rEyebrow').textContent=(CFG.meta.brand?CFG.meta.brand+' · ':'')+'ผลแบบทดสอบของคุณ';
- $('rName').textContent=main.name;$('rNameTh').textContent=main.nameTh&&main.nameTh!==main.name?main.nameTh:'';$('rNameTh').hidden=!$('rNameTh').textContent;$('rHeart').innerHTML=sub!==main?`ที่มีหัวใจ <b>${esc(sub.name)}</b>`:'';
+ $('rName').textContent=main.name;$('rNameTh').textContent=main.nameTh&&main.nameTh!==main.name?main.nameTh:'';$('rNameTh').hidden=!$('rNameTh').textContent;$('rHeart').innerHTML=sub!==main?'ที่มีหัวใจ '+andList(heartIds(sc,rank).map(id=>`<b style="color:${esc(cu(id).color)}">${esc(cu(id).name)}</b>`)):'';
  $('rNick').textContent=main.nick||'';$('rDef').textContent=main.def;
  $('rBars').innerHTML=rank.map((id,i)=>{const c=cu(id),tied=i>0&&sc.pct[rank[i-1]]===sc.pct[id]&&(!sc.pts||sc.pts[rank[i-1]]===sc.pts[id]);
-  return`<div class="brow ${i<2?'top':''}" style="--c:${esc(c.color)}"><span class="nm" title="${esc(c.name)}"><i class="rk">${i+1}</i><b class="nt">${esc(c.name)}</b>${tied?'<em class="eq">เสมอ</em>':''}</span><span class="tr"><span data-w="${sc.pct[id]}"></span></span><span class="pc">${sc.pct[id]}%${sc.pts?`<small>${sc.pts[id]}/${sc.full[id]} แต้ม</small>`:''}</span></div>`}).join('');
+  return`<div class="brow ${i<2?'top':''}" style="--c:${esc(c.color)}"><span class="nm" title="${esc(c.name)}"><i class="rk">${i+1}</i><b class="nt">${esc(c.name)}</b>${tied?'<em class="eq">เสมอ</em>':''}</span><span class="tr"><span data-w="${sc.pct[id]}"></span></span><span class="pc">${fmtPct(sc.pct[id])}${sc.pts?`<small>${sc.pts[id]}/${sc.full[id]} แต้ม</small>`:''}</span></div>`}).join('');
  requestAnimationFrame(()=>requestAnimationFrame(()=>$('rBars').querySelectorAll('.tr span').forEach(s=>s.style.width=s.dataset.w+'%')));
  const ch=chOf(main);
  $('rDesc').textContent=main.desc+(sub!==main?` และเมื่อผสมกับมุม ${sub.name} คุณยัง${sub.shortDef||''}ไปพร้อมกันด้วย`:'');
@@ -4219,8 +4237,8 @@ async function showResult(sc,fresh){lastResult=sc;show('vResult');
  const nm=id=>esc(cu(id).name);
  const T=sc.tie;$('rTie').hidden=!T;
  if(T){const all=[rank[0],...T.with].map(nm).join(', ').replace(/, ([^,]*)$/,' และ $1');
-  $('rTie').innerHTML=T.by==='none'?`<b>เสมอกันทุกเกณฑ์</b> ${all} ได้คะแนนเท่ากัน ${sc.pct[rank[0]]}% และตัดสินจากข้อที่เจอกันตรง ๆ หรือจำนวนครั้งที่เลือกแบบมั่นใจก็ยังเท่ากัน คุณจึงเป็นทั้ง ${all} พอ ๆ กัน ตัวที่แสดงเป็นตัวหลักเป็นเพียงลำดับในรายการ`
-   :`<b>คะแนนเท่ากัน ${sc.pct[rank[0]]}%</b> ระหว่าง ${all} ตัดสินให้ ${nm(rank[0])} เป็นตัวหลัก${T.by==='h2h'?` เพราะในข้อที่ Culture เหล่านี้เจอกันตรง ๆ คุณเลือก ${nm(rank[0])} มากที่สุด`:T.by==='s3'?` เพราะคุณเลือก ${nm(rank[0])} แบบ "มากๆ" บ่อยที่สุด`:` เพราะคุณเลือก ${nm(rank[0])} แบบมั่นใจ ("แน่ๆ" ขึ้นไป) บ่อยที่สุด`}`}
+  $('rTie').innerHTML=T.by==='none'?`<b>เสมอกันทุกเกณฑ์</b> ${all} ได้คะแนนเท่ากัน ${fmtPct(sc.pct[rank[0]])} และตัดสินจากข้อที่เจอกันตรง ๆ หรือจำนวนครั้งที่เลือกแบบมั่นใจก็ยังเท่ากัน คุณจึงเป็นทั้ง ${all} พอ ๆ กัน ตัวที่แสดงเป็นตัวหลักเป็นเพียงลำดับในรายการ`
+   :`<b>คะแนนเท่ากัน ${fmtPct(sc.pct[rank[0]])}</b> ระหว่าง ${all} ตัดสินให้ ${nm(rank[0])} เป็นตัวหลัก${T.by==='h2h'?` เพราะในข้อที่ Culture เหล่านี้เจอกันตรง ๆ คุณเลือก ${nm(rank[0])} มากที่สุด`:T.by==='s3'?` เพราะคุณเลือก ${nm(rank[0])} แบบ "มากๆ" บ่อยที่สุด`:` เพราะคุณเลือก ${nm(rank[0])} แบบมั่นใจ ("แน่ๆ" ขึ้นไป) บ่อยที่สุด`}`}
  const R=relationsOf(sc,rank),N=Math.min(3,Math.max(1,+CFG.perPair||1)),m0=nm(rank[0]);
  const pick=x=>{const g=R.mg(x),n=QS.filter(q=>pairKey(q.a,q.b)===pairKey(rank[0],x)).length||1,full=3*n;
   return g<0?`คุณเลือกฝั่ง ${nm(x)}`:g===0?`คุณเลือกสองฝั่งพอ ๆ กัน`:g<=full/3?`คุณเลือก ${m0} แค่นิดเดียว`:g<full?`คุณเลือก ${m0} ค่อนข้างชัด`:`คุณเลือก ${m0} เต็มที่`};
@@ -4234,7 +4252,7 @@ async function showResult(sc,fresh){lastResult=sc;show('vResult');
   <li><b>คู่หู</b> คือตัวที่คุณเอียงไปทาง ${m0} น้อยที่สุด หรือเลือกฝั่งนั้นแทน <b>คู่กัด</b> คือตัวที่คุณเอียงไปทาง ${m0} มากที่สุด</li>
   <li>ผลนี้มาจากคำตอบของคุณคนเดียว ไม่ได้วัดตัวเพื่อนร่วมงาน และแต่ละคู่วัดจาก ${N} ข้อ ใช้เป็นจุดเริ่มคุยกันในทีม ไม่ใช่คำตัดสิน${N===1?' ถ้า HR ตั้งเป็น 2–3 ข้อต่อคู่ ผลส่วนนี้จะนิ่งขึ้น':''}</li>
   <li><b>ถ้าคะแนนรวมเท่ากัน</b> ตัดสินตัวหลักตามลำดับ 1) ข้อที่ Culture ที่เสมอกันเจอกันตรง ๆ 2) จำนวนครั้งที่เลือก "มากๆ" 3) จำนวนครั้งที่เลือก "แน่ๆ" ขึ้นไป</li></ul>`;
- $('saveCard').hidden=!downloads;
+
  mountStage($('resStage'),'single',liveEng?[liveEng.make(effChar(main),lookFor(main))]:[],'story');live.acc=main.color;
  if(!liveEng)$('resStage').innerHTML=`<div class="fallback">${imgOrPh(main)}</div>`;
  $('rOrg').innerHTML='<p class="note">กำลังโหลดภาพรวมขององค์กร…</p>';$('rNote').textContent='';
@@ -4259,25 +4277,68 @@ async function renderOrg(main){const rows=await fetchResults();const ids=new Set
 $('retake').onclick=()=>{if(ls.get('cq-pending')){submitResult();toast('กำลังบันทึกผลครั้งก่อนให้ก่อน');return}attempt=newAttempt();saveAttempt();startQuiz()};
 $('toHome').onclick=()=>{show('vHome');renderHome()};
 
-// share card
-$('saveCard').onclick=async()=>{if(!downloads||!lastResult)return;const btn=$('saveCard');btn.disabled=true;
- try{const blob=await drawCard(lastResult);const main=cu(lastResult.rank[0]);await downloads.save({filename:'culture-'+(main.short||main.id).replace(/[^\w-]+/g,'-').toLowerCase()+'.png',data:blob});toast('บันทึกการ์ดแล้ว')}
- catch(e){if(e&&e.code==='declined'){}else toast('บันทึกการ์ดไม่สำเร็จ ลองใหม่อีกครั้ง')}finally{btn.disabled=false}};
+// share card: 1080x1920 (IG/FB Story size), built once per result, then saved or shared
+let cardBlob=null,cardFor=null;
+const cardName=()=>{const m=cu(lastResult.rank[0]);return'culture-'+(m.short||m.id).replace(/[^\w-]+/g,'-').toLowerCase()+'.png'};
+async function cardFile(){if(cardFor!==lastResult){cardBlob=await drawCard(lastResult);cardFor=lastResult}return cardBlob}
+$('saveCard').onclick=async()=>{if(!lastResult)return;const dlg=$('cardDlg'),img=$('cardImg');dlg.hidden=false;img.removeAttribute('src');$('cardBusy').hidden=false;
+ try{const b=await cardFile();img.src=URL.createObjectURL(b)}catch(e){toast('สร้างภาพไม่สำเร็จ ลองใหม่อีกครั้ง');dlg.hidden=true}finally{$('cardBusy').hidden=true}};
+$('cardX').onclick=$('cardDlg').querySelector('.sbg').onclick=()=>{$('cardDlg').hidden=true};
+async function saveCardFile(){const b=await cardFile();
+ if(downloads){await downloads.save({filename:cardName(),data:b});return}
+ const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=cardName();document.body.appendChild(a);a.click();a.remove()}
+$('cardSave').onclick=async()=>{try{await saveCardFile();toast('บันทึกภาพแล้ว')}catch(e){if(!(e&&e.code==='declined'))toast('บันทึกภาพไม่สำเร็จ ลองใหม่อีกครั้ง')}};
+$('cardShare').onclick=async()=>{const b=cardBlob;if(!b)return;const f=new File([b],cardName(),{type:'image/png'}),m=cu(lastResult.rank[0]);
+ try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:CFG.meta.title||'Culture',text:`ฉันคือ ${m.name}${m.nick?' · '+m.nick:''}`+(window.SHARE_URL?' ลองทำได้ที่ '+window.SHARE_URL:'')});return}}
+ catch(e){if(e&&e.name==='AbortError')return}
+ try{await saveCardFile();toast('เครื่องนี้แชร์รูปตรงไม่ได้ บันทึกภาพให้แล้ว เปิด IG หรือ Facebook แล้วเลือกรูปนี้ได้เลย')}catch(e){toast('แชร์ไม่สำเร็จ ลองกดบันทึกภาพแทน')}};
+function wrapLines(x,t,w,max){const seg=typeof Intl!=='undefined'&&Intl.Segmenter?[...new Intl.Segmenter('th',{granularity:'word'}).segment(t)].map(s=>s.segment):[...t],L=[];let cur='';
+ for(const s of seg){if(x.measureText(cur+s).width>w&&cur.trim()){L.push(cur.trim());cur=s.trimStart();if(L.length===max)break}else cur+=s}
+ if(L.length<max&&cur.trim())L.push(cur.trim());else if(L.length===max&&cur.trim())L[max-1]=trunc(x,L[max-1]+'…',w).replace(/……$/,'…');return L}
 async function drawCard(sc){try{await document.fonts.ready}catch(e){}
- const main=cu(sc.rank[0]),sub=cu(sc.rank[1])||main,W=1080,H=1350,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
- x.fillStyle='#efebe4';x.fillRect(0,0,W,H);
- x.fillStyle='#fbf9f5';roundRect(x,48,48,W-96,H-96,56);x.fill();
- x.setLineDash([14,10]);x.lineWidth=3;x.strokeStyle='#d8cfc1';roundRect(x,66,66,W-132,H-132,44);x.stroke();x.setLineDash([]);
- x.fillStyle=main.color;x.globalAlpha=.12;x.beginPath();x.arc(W*.72,560,330,0,Math.PI*2);x.fill();x.globalAlpha=1;
- if(thumbEng){thumbEng.render([thumbEng.make(effChar(main),lookFor(main))],{w:460,h:580,dpr:2,t:1.3,motion:'idle',yaw:.22,pitch:.05,zoom:10.2,ty:2.62});x.drawImage(thumbCanvas,520,200,460,580)}
- x.fillStyle='#7a7369';x.font='700 26px Anuphan, sans-serif';x.fillText((CFG.meta.brand||'').toUpperCase(),120,160);
- x.fillStyle='#34312c';x.font='600 40px Anuphan, sans-serif';x.fillText('คุณคือ',120,300);
- x.fillStyle=main.color;x.font='700 '+fitFont(x,main.name,440,96)+'px Anuphan, sans-serif';x.fillText(main.name,116,400);
- if(sub!==main){x.fillStyle='#34312c';x.font='600 36px Anuphan, sans-serif';x.fillText('ที่มีหัวใจ',120,470);x.fillStyle=sub.color;x.font='700 '+fitFont(x,sub.name,400,48)+'px Anuphan, sans-serif';x.fillText(sub.name,120,530)}
- x.fillStyle=main.color;x.font='700 32px "Noto Sans Thai", sans-serif';x.fillText(main.nick||'',120,610);
- let y=860;x.font='600 28px "Noto Sans Thai", sans-serif';
- sc.rank.slice(0,8).forEach(id=>{const c=cu(id);if(!c)return;x.fillStyle='#34312c';x.fillText(trunc(x,c.name,300),120,y+10);x.fillStyle='#e5ded3';roundRect(x,440,y-12,440,22,11);x.fill();x.fillStyle=c.color;roundRect(x,440,y-12,Math.max(22,440*sc.pct[id]/100),22,11);x.fill();x.fillStyle='#34312c';x.fillText(sc.pct[id]+'%',900,y+10);y+=48});
- return await new Promise(r=>cv.toBlob(r,'image/png'))}
+ const rank=sc.rank.filter(id=>cu(id)),main=cu(rank[0]),sub=cu(rank[1])||main,W=1080,H=1920,cv=document.createElement('canvas');cv.width=W;cv.height=H;const x=cv.getContext('2d');
+ const INK='#2d2b28',MUT='#857f78',LINE='#e3dccf',F='"Anuphan","Noto Sans Thai",sans-serif',B='"Noto Sans Thai","Anuphan",sans-serif',cx=W/2;
+ const font=(w,s,f=F)=>x.font=`${w} ${s}px ${f}`,txt=(t,X,Y,c,al='center')=>{x.fillStyle=c;x.textAlign=al;x.fillText(t,X,Y)};
+ const tint=(c,a)=>{x.save();x.globalAlpha=a;x.fillStyle=c;return()=>x.restore()};
+ const char=(c,X,Y,w,h)=>{if(!thumbEng)return;try{thumbEng.render([thumbEng.make(effChar(c),lookFor(c))],{w,h,dpr:2,t:1.3,motion:'idle',yaw:.22,pitch:.05,zoom:10.2,ty:2.62});x.drawImage(thumbCanvas,X,Y,w,h)}catch(e){}};
+ x.fillStyle='#f0ede8';x.fillRect(0,0,W,H);
+ x.fillStyle='#fbf9f5';roundRect(x,44,44,W-88,H-88,56);x.fill();
+ x.setLineDash([14,10]);x.lineWidth=3;x.strokeStyle='#ddd5c9';roundRect(x,62,62,W-124,H-124,42);x.stroke();x.setLineDash([]);
+ font(800,24,'Inter,'+F);x.letterSpacing='6px';txt(((CFG.meta.brand||'smileCULTURE')+' · my culture').toUpperCase(),cx,140,'#907d69');x.letterSpacing='0px';
+ let r=tint(main.color,.13);x.beginPath();x.arc(cx,440,225,0,Math.PI*2);x.fill();r();
+ char(main,cx-215,170,430,540);
+ let y=770;font(600,36);txt('ฉันคือ',cx,y,MUT);
+ y+=90;font(700,fitFont(x,main.name,900,92));txt(main.name,cx,y,main.color);
+ if(main.nameTh&&main.nameTh!==main.name){y+=54;font(600,38);txt(main.nameTh,cx,y,INK)}
+ const hearts=heartIds(sc,rank).map(cu);
+ if(sub!==main){y+=54;let parts=[['ที่มีหัวใจ ',MUT,500,B]];hearts.forEach((c,i)=>{if(i)parts.push([i===hearts.length-1?' และ ':', ',MUT,500,B]);parts.push([c.name,c.color,700,F])});
+  const wOf=P=>P.reduce((a,[s,,w,f])=>(font(w,32,f),a+x.measureText(s).width),0);if(wOf(parts)>900)parts=parts.map(p=>{const c=hearts.find(h=>h.name===p[0]);return c&&c.short?[c.short,p[1],p[2],p[3]]:p});
+  let X=cx-wOf(parts)/2;parts.forEach(([s,col,w,f])=>{font(w,32,f);txt(s,X,y,col,'left');X+=x.measureText(s).width})}
+ if(main.nick){y+=32;font(700,30,B);const w=x.measureText(main.nick).width+56;r=tint(main.color,.14);roundRect(x,cx-w/2,y,w,58,29);x.fill();r();txt(main.nick,cx,y+40,main.color);y+=58}
+ const tags=(main.tags&&main.tags.length?main.tags:main.subs||[]).slice(0,3).map(t=>'#'+String(t).replace(/^#/,''));
+ if(tags.length){y+=20;font(600,26,B);const ws=tags.map(t=>x.measureText(t).width+40),tot=ws.reduce((a,b)=>a+b,0)+14*(ws.length-1);let X=cx-tot/2;
+  tags.forEach((t,i)=>{x.fillStyle='#fff';roundRect(x,X,y,ws[i],50,25);x.fill();x.lineWidth=2;x.strokeStyle=LINE;x.stroke();txt(t,X+ws[i]/2,y+34,INK);X+=ws[i]+14});y+=50}
+ // top 3 + buddy/rival, anchored to the bottom so they stay above the Story reply bar
+ const R=relationsOf(sc,rank),rel=[[R.buddy,'คู่หู'],[R.rival,'คู่กัด']].filter(p=>p[0]&&cu(p[0]));
+ const top3=rank.slice(0,3),tieAt=i=>i>0&&sc.pct[top3[i-1]]===sc.pct[top3[i]]&&(!sc.pts||sc.pts[top3[i-1]]===sc.pts[top3[i]]),sn=c=>c.short||c.name;
+ let note='';if(tieAt(1)&&sc.tie){const T=sc.tie,o=andList(T.with.map(id=>sn(cu(id)))),m=sn(main);note=`${m} ได้คะแนนเท่ากับ ${o} `+(T.by==='h2h'?`แต่ในข้อที่เจอกันตรง ๆ คุณเลือก ${m} มากกว่า จึงเป็นตัวหลัก`:T.by==='s3'?`แต่คุณเลือก ${m} แบบ "มากๆ" บ่อยกว่า จึงเป็นตัวหลัก`:T.by==='s2'?`แต่คุณเลือก ${m} แบบมั่นใจบ่อยกว่า จึงเป็นตัวหลัก`:'ทุกเกณฑ์ คุณจึงเป็นทั้งสองแบบพอ ๆ กัน')}
+ else if(hearts.length>1)note=`${andList(hearts.map(sn))} ได้คะแนนเท่ากัน จึงเป็นหัวใจรองของคุณทั้งคู่`;
+ font(500,22,B);const noteL=note?wrapLines(x,note,780,2):[],ext=noteL.length?noteL.length*30+16:0;
+ const by=H-(rel.length?720:450)-ext;
+ if(main.def){y+=64;font(500,30,B);const n=Math.min(3,Math.floor((by-36-y)/46)+1);if(n>0)wrapLines(x,'“'+main.def+'”',840,n).forEach(l=>{txt(l,cx,y,'#5e5850');y+=46})}
+ x.fillStyle='#fff';roundRect(x,110,by,W-220,236+ext,32);x.fill();
+ font(700,24,B);txt('คุณเอียงไปทาง Culture ไหน',150,by+50,MUT,'left');
+ top3.forEach((id,i)=>{const c=cu(id),yy=by+100+i*48;font(700,24,B);txt(String(i+1),150,yy+9,MUT,'left');font(i?600:700,28,B);const mw=tieAt(i)?240:280,nm=trunc(x,c.short&&x.measureText(c.name).width>mw?c.short:c.name,mw);txt(nm,184,yy+10,i?INK:c.color,'left');if(tieAt(i)){const w=x.measureText(nm).width;font(700,20,B);const pw=x.measureText('เสมอ').width+22;x.fillStyle='#fbf2de';roundRect(x,184+w+12,yy-16,pw,32,16);x.fill();txt('เสมอ',184+w+12+pw/2,yy+7,'#c79a30')}
+  x.fillStyle='#ece6dc';roundRect(x,480,yy-10,300,20,10);x.fill();x.fillStyle=c.color;roundRect(x,480,yy-10,Math.max(20,300*sc.pct[id]/100),20,10);x.fill();font(700,28,B);txt(fmtPct(sc.pct[id]),930,yy+10,INK,'right')});
+ font(500,22,B);noteL.forEach((l,k)=>txt(l,150,by+256+k*30,'#8a6a1f','left'));
+ if(rel.length){const cw=(W-220-24)/2,cy=by+260+ext,why={'คู่หู':'คิดคล้ายกัน ทำงานด้วยกันลื่นไหล','คู่กัด':'มองต่าง แต่ช่วยเติมมุมที่คุณมักมองข้าม'};rel.forEach(([id,tag],i)=>{const c=cu(id),X=110+i*(cw+24),tx=X+160,tw0=cw-180;x.fillStyle='#fff';roundRect(x,X,cy,cw,230,32);x.fill();
+  r=tint(c.color,.13);roundRect(x,X+18,cy+18,124,194,22);x.fill();r();char(c,X+18,cy+28,124,174);
+  font(700,22,B);const tw=x.measureText(tag).width+28;x.fillStyle=i?INK:c.color;roundRect(x,tx,cy+26,tw,38,19);x.fill();txt(tag,tx+tw/2,cy+53,'#fff');
+  font(700,32);const nm=c.short&&x.measureText(c.name).width>tw0?c.short:c.name;font(700,fitFont(x,nm,tw0,32));txt(trunc(x,nm,tw0),tx,cy+108,c.color,'left');
+  font(500,22,B);wrapLines(x,why[tag],tw0,2).forEach((l,k)=>txt(l,tx,cy+150+k*32,'#6f675e','left'))})}
+ font(700,30);txt(CFG.meta.title||'Culture ไหน คือตัวคุณ?',cx,H-170,INK);
+ font(500,24,B);txt(window.SHARE_URL?'ลองทำได้ที่ '+window.SHARE_URL.replace(/^https?:\/\//,''):'ลองทำแบบทดสอบแล้วมาเทียบกัน',cx,H-128,MUT);
+ return await new Promise((ok,no)=>cv.toBlob(b=>b?ok(b):no(Error('blob')),'image/png'))}
 function roundRect(x,a,b,w,h,r){x.beginPath();x.moveTo(a+r,b);x.arcTo(a+w,b,a+w,b+h,r);x.arcTo(a+w,b+h,a,b+h,r);x.arcTo(a,b+h,a,b,r);x.arcTo(a,b,a+w,b,r);x.closePath()}
 function fitFont(x,t,maxW,size){let s=size;x.font='700 '+s+'px Anuphan, sans-serif';while(x.measureText(t).width>maxW&&s>30){s-=4;x.font='700 '+s+'px Anuphan, sans-serif'}return s}
 function trunc(x,t,w){if(x.measureText(t).width<=w)return t;while(t.length>1&&x.measureText(t+'…').width>w)t=t.slice(0,-1);return t+'…'}
@@ -4875,7 +4936,7 @@ function applyCfg(c){CFG=c;if(!CFG.meta)CFG.meta=clone(DEFAULT_CFG.meta);QS=live
 // ---------- server bridge (stands in for the artifact runtime: identity, data, AI, downloads)
 async function API(path,body,method){const r=await fetch(path,{method:method||(body?'POST':'GET'),headers:body?{'content-type':'application/json'}:{},body:body?JSON.stringify(body):undefined,credentials:'same-origin'});
  const j=await r.json().catch(()=>({}));if(!r.ok)throw Object.assign(new Error(j.error||String(r.status)),{status:r.status,code:j.code});return j}
-let ME={signedIn:false};
+let ME={signedIn:false};window.SHARE_URL=location.origin+"/quiz";
 const dbBridge={doc:p=>({async get(){const j=await API(p==='cfg/live'?'/api/config':'/api/admin/config');return{exists:!!j.config,data:()=>j.config}},
  async set(d){if(p==='cfg/live')return API('/api/admin/publish',{config:d});if(p==='cfg/draft')return API('/api/admin/config',{config:d},'PUT');throw new Error('unsupported '+p)}})};
 const sampleBridge={async json(prompt){let t;try{t=(await API('/api/admin/ai',{prompt})).text||''}catch(e){throw Object.assign(e,{code:e.status===429?'rate_limited':'unavailable'})}
@@ -4914,4 +4975,5 @@ renderHome();
 })();
 </script>
 
+</body></html>
 </html>
