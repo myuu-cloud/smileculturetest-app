@@ -428,11 +428,11 @@ details.cvr .chev{color:var(--muted);font-size:12px}details.cvr[open] .chev{tran
 <main>
 <section id="vHome">
  <div class="home-hero wrap-wide"><header class="home-top">
-  <div class="brandrow"><span class="eyebrow" id="hBrand">smileCULTURE</span><span class="row"><button id="adminBtn" class="btn quiet sm" hidden>⚙ หน้า Admin สำหรับ HR</button></span></div>
+  <div class="brandrow"><span id="hBrand"><img src="/logo.png" alt="smileCULTURE" style="height:26px;width:auto;display:block"></span><span class="row"><button id="adminBtn" class="btn quiet sm" hidden>⚙ หน้า Admin สำหรับ HR</button></span></div>
   <div id="acct" class="acct" aria-live="polite"></div>
   <h1 class="display" id="hTitle">Culture ไหน คือตัวคุณ?</h1>
   <p class="lede" id="hSub"></p>
-  <ul class="facts"><li id="fCount">28 ข้อ</li><li id="fTime">ราว 4 นาที</li><li>ลงชื่อด้วย Google</li><li>รู้ผลทันที</li></ul>
+  <ul class="facts"><li id="fCount">28 ข้อ</li><li id="fTime">ราว 4 นาที</li></ul>
   <div class="cta-row"><button id="startBtn" class="btn primary lg">เริ่มทำแบบทดสอบ</button><button id="lastBtn" class="btn quiet" hidden>ดูผลล่าสุดของคุณ</button></div>
   <div><button id="resetBtn" class="link" hidden>ล้างคำตอบที่ค้างไว้ แล้วเริ่มใหม่</button></div>
  </header>
@@ -4123,7 +4123,7 @@ function show(v){VIEWS.forEach(x=>$(x).hidden=x!==v);setPath(v==='vQuiz'?'/quiz'
 // ---------- home
 function renderHome(){
  document.documentElement.style.setProperty('--accent','var(--brand)');
- const m=CFG.meta||{};$('hBrand').textContent=m.brand||'';$('hTitle').textContent=m.title||'';$('hSub').textContent=m.sub||'';
+ const m=CFG.meta||{};$('hBrand').querySelector('img').alt=m.brand||'smileCULTURE';$('hTitle').textContent=m.title||'';$('hSub').textContent=m.sub||'';
  const n=QS.length;$('fCount').textContent=n+' ข้อ';$('fTime').textContent='ราว '+timeFor(n)+' นาที';
  $('castTitle').textContent='ตัวละครทั้ง '+CFG.cultures.length+' ตัว';
  attempt=loadAttempt();const answered=attempt?Object.keys(attempt.ans).length:0;

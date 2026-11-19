@@ -15,7 +15,7 @@ s = ('<!doctype html><html lang="th"><head><meta charset="utf-8"><meta name="vie
 
 # --- account bar + privacy notice on the start page
 R('<div class="brandrow"><span class="eyebrow" id="hBrand">smileCULTURE</span><button id="adminBtn" class="btn quiet sm" hidden>⚙ หน้า Admin สำหรับ HR</button></div>',
-  '<div class="brandrow"><span class="eyebrow" id="hBrand">smileCULTURE</span><span class="row"><button id="adminBtn" class="btn quiet sm" hidden>⚙ หน้า Admin สำหรับ HR</button></span></div>\n  <div id="acct" class="acct" aria-live="polite"></div>')
+  '<div class="brandrow"><span id="hBrand"><img src="/logo.png" alt="smileCULTURE" style="height:26px;width:auto;display:block"></span><span class="row"><button id="adminBtn" class="btn quiet sm" hidden>⚙ หน้า Admin สำหรับ HR</button></span></div>\n  <div id="acct" class="acct" aria-live="polite"></div>')
 R('/* admin tab: launcher grid */', '''.acct{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;padding:12px 14px;border-radius:18px;background:var(--surface);box-shadow:inset 0 0 0 1px var(--line);max-width:640px}
 .acct img{width:40px;height:40px;border-radius:50%;object-fit:cover}.acct .who2{display:grid;line-height:1.35;min-width:0}.acct .who2 b{font-family:var(--f-display);font-size:15px}.acct .who2 small{color:var(--muted);font-size:12.5px;overflow-wrap:anywhere}
 .acct .priv{flex:1 1 280px;font-size:12.5px;color:var(--muted);line-height:1.6;margin:0}.gbtn{display:inline-flex;align-items:center;gap:10px;border:0;border-radius:14px;padding:11px 16px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);font-family:var(--f-display);font-weight:700;font-size:14px;cursor:pointer;color:var(--ink)}
@@ -28,7 +28,10 @@ R('/* admin tab: launcher grid */', '''.acct{display:flex;flex-wrap:wrap;align-i
 /* admin tab: launcher grid */''')
 
 # --- results are tied to the Google account now, so drop the 'anonymous' chip
-R('<li>ไม่ระบุตัวตน</li>', '<li>ลงชื่อด้วย Google</li>')
+R('<li>ไม่ระบุตัวตน</li>', '')
+R('<li>รู้ผลทันที</li>', '')
+# --- logo image instead of the brand text
+R("$('hBrand').textContent=m.brand||''", "$('hBrand').querySelector('img').alt=m.brand||'smileCULTURE'")
 R('คำตอบไม่ระบุตัวตน HR เห็นเฉพาะภาพรวมขององค์กร', 'ชื่อ อีเมล และผลของคุณ เห็นได้เฉพาะผู้ดูแลที่ได้รับอนุญาต')
 
 # --- attempt ids (idempotent submit) and server submit
