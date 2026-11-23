@@ -4461,6 +4461,12 @@ function csvApplyAi(o,r,need){if(!r||typeof r!=='object')return 0;let n=0;
   if(!isBlank(o[k]))continue;o[k]=v;if(!o._ai.includes(k))o._ai.push(k);n++}return n}
 async function csvAiRun(only){const P=ADM.csv;if(!P||P.stage!=='review'||!sample||P.busy)return;
  const queue=P.items.filter(o=>(only?only.includes(o):true)&&needsAI(o).length);if(!queue.length)return;P.busy=true;P.err='';let done=0;
+ if(sample.manual){const needs=queue.map(o=>needsAI(o));queue.forEach(o=>o._st='run');csvRefresh();
+  const prompt=`มี Culture ${queue.length} รายการ ทำแต่ละรายการตามคำสั่งของรายการนั้น แล้วตอบเป็น JSON array เดียวที่มี ${queue.length} object เรียงตามลำดับรายการ (object ที่ 1 = รายการที่ 1)\n\n`+queue.map((o,k)=>`===== รายการที่ ${k+1} =====\n`+csvAiPrompt(o,needs[k])).join('\n\n');
+  try{let r=await sample.json(prompt,{cache:false,title:'เติมช่องที่ว่างให้ Culture จากไฟล์ CSV ทั้งหมด '+queue.length+' รายการในครั้งเดียว'});if(!Array.isArray(r))r=[r];
+   queue.forEach((o,k)=>{csvApplyAi(o,r[k],needs[k]);o._st=needsAI(o).length?'part':'ok'})}
+  catch(e){queue.forEach(o=>o._st=e&&e.code==='cancelled'?'':'fail');if(!e||e.code!=='cancelled')P.err=sampleErr(e)}
+  P.busy=false;csvRefresh();return}
  queue.forEach(o=>o._st='wait');csvRefresh();
  const work=async()=>{while(queue.length&&ADM.csv===P){const o=queue.shift(),need=needsAI(o);o._st='run';csvRow(o);
    try{const r=await sample.json(csvAiPrompt(o,need),{cache:false});csvApplyAi(o,r,need);o._st=needsAI(o).length?'part':'ok'}
@@ -4647,7 +4653,7 @@ function wireAdmin(){const body=$('admBody');
  body.querySelectorAll('[data-act=csvOpen]').forEach(b=>b.onclick=()=>{ADM.csv=ADM.csv&&ADM.csv.stage==='review'?ADM.csv:{stage:'intro'};renderAdmin();const p=body.querySelector('.csvp');if(p)p.scrollIntoView({block:'start'})});
  body.querySelectorAll('[data-act=csvFile]').forEach(b=>b.onclick=()=>{if(fileIn){fileIn.value='';fileIn.click()}});
  body.querySelectorAll('[data-act=csvBack]').forEach(b=>b.onclick=()=>{ADM.csv={stage:'intro'};renderAdmin()});
- if(fileIn)fileIn.onchange=()=>{const f=fileIn.files&&fileIn.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{ADM.csv=analyzeCSV(rd.result,f.name);ADM.tplText=null;renderAdmin();const p=$('admBody').querySelector('.csvp');if(p)p.scrollIntoView({block:'start'});if(ADM.csv.stage==='review'&&sample)csvAiRun()};rd.onerror=()=>{ADM.csv={stage:'error',error:'อ่านไฟล์ไม่สำเร็จ'};renderAdmin()};rd.readAsText(f,'utf-8')};
+ if(fileIn)fileIn.onchange=()=>{const f=fileIn.files&&fileIn.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{ADM.csv=analyzeCSV(rd.result,f.name);ADM.tplText=null;renderAdmin();const p=$('admBody').querySelector('.csvp');if(p)p.scrollIntoView({block:'start'});if(ADM.csv.stage==='review'&&sample&&!sample.manual)csvAiRun()};rd.onerror=()=>{ADM.csv={stage:'error',error:'อ่านไฟล์ไม่สำเร็จ'};renderAdmin()};rd.readAsText(f,'utf-8')};
  body.querySelectorAll('.csvp [data-act=csvCancel]').forEach(b=>b.onclick=()=>{ADM.csv=null;ADM.tplText=null;renderAdmin()});
  body.querySelectorAll('[data-tpl]').forEach(tp=>tp.onclick=async()=>{const kind=tp.dataset.tpl,csv='\uFEFF'+CSV_TPL(kind);
   if(downloads){try{await downloads.save({filename:`culture-${kind==='basic'?'basic':'complete'}-template.csv`,data:csv});toast('บันทึกไฟล์ตัวอย่างแล้ว');return}catch(e){if(e&&e.code==='declined')return}}
