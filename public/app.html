@@ -4865,6 +4865,16 @@ async function aiDesignMany(list0){if(ADM.aiBusy||!list0.length)return;const nm=
  const skip=list0.filter(i=>{const c=D().cultures[i];return!c.name||!String(c.def||'').trim()}),list=list0.filter(i=>!skip.includes(i));
  const skipTxt=skip.length?`ข้าม ${skip.map(nm).join(', ')} เพราะยังไม่มีชื่อหรือ Definition (ใส่ในขั้นที่ 1 ก่อน)`:'';
  if(!list.length){ADM.aiSt=skipTxt;renderAdmin();return}ADM.aiBusy=true;let done=0;const fails=[];
+ if(sample.manual&&list.length>1){const K=liveEng&&liveEng.catalog();if(K){K.bases.forEach(b=>{if(b.skin)BASE_SKIN[b.id]=b.skin});const cs=D().cultures,others=cs.filter((c,k)=>!list.includes(k)&&hasChar(c)),used=new Set(others.map(c=>c.char)),cats=offerCats(K,takenBy(others,K));
+  const g0=pickGender(others,list[0]),plans=list.map((i,k)=>({gender:cs[i].charGender||(k%2?(g0==='f'?'m':'f'):g0),skin:pickSkin(others,i)}));
+  const full=list.map((i,k)=>aiCharPrompt(cs[i],K,used,others,plans[k],cats)),cut='ตัวละครของ Culture อื่นที่มีอยู่แล้ว';
+  const block=(t,k)=>`===== ตัวที่ ${k+1} =====\n`+t.slice(t.indexOf('\n')+1,t.indexOf(cut)).trim();
+  const prompt=`คุณคือนักออกแบบตัวละครตุ๊กตาผ้าสักหลาด 3 มิติ สำหรับแบบทดสอบ Culture ขององค์กร ออกแบบตัวละคร ${list.length} ตัว ตัวละ 1 Culture ตามรายการด้านล่าง ทุกตัวต้องต่างกันเอง (รูปร่าง ทรงผม สีผม ชุด ของประจำตัว และท่าทางห้ามซ้ำกัน) และต่างจากตัวที่มีอยู่แล้ว\n\n`+full.map(block).join('\n\n')+'\n\n'+full[0].slice(full[0].indexOf(cut))+`\n\nตอบเป็น JSON array เดียวที่มี ${list.length} object เรียงตามลำดับตัวที่ 1 ถึง ${list.length} แต่ละ object ใช้รูปแบบข้างบน`;
+  ADM.aiBusy=true;ADM.aiSt=`รอคำตอบจาก AI สำหรับ ${list.length} ตัว…`;renderAdmin();
+  try{let r=await sample.json(prompt,{cache:false,title:'ออกแบบตัวละครให้ทั้ง '+list.length+' Culture ในครั้งเดียว (AI จะเลือกจากชิ้นส่วนที่มีในระบบ)'});if(!Array.isArray(r))r=[r];
+   list.forEach((i,k)=>{const cu=cs[i];if(r[k]&&applyAiChar(cu,r[k],K,used,plans[k],cats)){used.add(cu.char);done++}else fails.push(`${nm(i)}: AI ตอบไม่ครบ ลองกด ✦ ให้ AI สร้าง ที่ตัวนี้`)});if(done)setDirty(true)}
+  catch(e){if(!e||e.code!=='cancelled')fails.push(aiCharErr(e))}
+  ADM.aiBusy=false;ADM.aiSt=[done?`ออกแบบเสร็จ ${done} ตัว กดที่ตัวละครเพื่อดูและแต่งต่อ แล้วบันทึกร่าง`:'',fails.length?'ยังไม่สำเร็จ: '+fails.join(' / '):'',skipTxt].filter(Boolean).join(' · ');renderAdmin();if(done)toast(`AI ออกแบบตัวละครให้ ${done} Culture แล้ว`);return}}
  for(const i of list){const c=D().cultures[i];ADM.aiSt=`AI กำลังออกแบบตัวละครของ ${nm(i)} (${done+fails.length+1}/${list.length})…`;renderAdmin();
   try{await aiDesignChar(i,new Set(list.slice(list.indexOf(i)+1)));done++}catch(e){fails.push(`${nm(i)}: ${aiCharErr(e)}`);if(e&&!['nodef','bad'].includes(e.code))break}}
  ADM.aiBusy=false;ADM.aiSt=[done?`ออกแบบเสร็จ ${done} ตัว กดที่ตัวละครเพื่อดูและแต่งต่อ แล้วบันทึกร่าง`:'',fails.length?'ยังไม่สำเร็จ: '+fails.join(' / '):'',skipTxt].filter(Boolean).join(' · ');renderAdmin();if(done)toast(`AI ออกแบบตัวละครให้ ${done} Culture แล้ว`)}
