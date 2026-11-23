@@ -4384,7 +4384,7 @@ function admCultures(){const cs=D().cultures,np=cs.length*(cs.length-1)/2,N=perP
   <div class="field"><label for="c${i}-nick">ฉายาในหน้าผล</label><input id="c${i}-nick" data-f="nick" value="${esc(c.nick)}"></div>
   <div class="field"><label for="c${i}-desc">คำอธิบายตัวตน</label><textarea id="c${i}-desc" data-f="desc">${esc(c.desc)}</textarea></div>
   <div class="fgrid"><div class="field"><label for="c${i}-strengths">จุดแข็ง (บรรทัดละข้อ)</label><textarea id="c${i}-strengths" data-f="strengths">${esc((c.strengths||[]).join('\n'))}</textarea></div><div class="field"><label for="c${i}-watch">เรื่องที่ลองพัฒนาได้ (บรรทัดละข้อ)</label><textarea id="c${i}-watch" data-f="watch">${esc((c.watch||[]).join('\n'))}</textarea></div></div>
-  <div class="row">${sample?`<button class="btn quiet sm" data-act="aiText">✦ ให้ AI ร่างฉายา คำอธิบาย และจุดแข็งจาก Definition</button>`:''}<span class="note" data-st></span><span style="flex:1"></span>${cs.length>MIN_C?`<button class="btn danger sm" data-act="del">ลบ Culture นี้${hasChar(c)?' และตัวละคร':''}</button>`:''}</div>
+  <div class="row">${sample?`<button class="btn primary sm" data-act="aiText">✦ ให้ AI กรอกช่องที่ว่างให้ครบ</button>`:''}<span class="note" data-st></span><span style="flex:1"></span>${cs.length>MIN_C?`<button class="btn danger sm" data-act="del">ลบ Culture นี้${hasChar(c)?' และตัวละคร':''}</button>`:''}</div>
  </div></details>`).join('')}
  ${cs.length<MAX_C?`<button class="btn quiet" id="addCulture">+ เพิ่ม Culture</button>`:''}
  <p class="next-step">เสร็จแล้ว ไปต่อที่ <button class="link" data-goto="chars">ขั้นที่ 2 สร้างตัวละคร →</button></p></div>`}
@@ -4702,12 +4702,16 @@ function aiTextFor(c){return sample.json(`เขียนข้อความ�
 ตอบ JSON object เท่านั้น: {"shortDef":"ความหมายแบบสั้นไม่เกิน 45 ตัวอักษร","nick":"ฉายาเชิงบวก 2-4 คำ","desc":"2 ประโยค เขียนถึงผู้อ่านด้วยคำว่า คุณ อบอุ่นและเจาะจง","strengths":["จุดแข็ง 3 ข้อ ข้อละไม่เกิน 40 ตัวอักษร"],"watch":["เรื่องที่ลองพัฒนาได้ 2 ข้อ เขียนเชิงแนะนำ ไม่ตำหนิ"]}
 ไม่ใช้คำลงท้าย ครับ/ค่ะ`,{cache:false}).then(r=>r&&typeof r==='object'?r:null)}
 async function aiCultureText(i,det){if(!sample)return;const c=D().cultures[i],st=det.querySelector('[data-st]');
- if(!c.name||!c.def){st.textContent='ใส่ชื่อและ Definition ก่อน';return}
- st.textContent='กำลังร่าง…';
- try{const r=await aiTextFor(c);
-  if(r){['shortDef','nick','desc'].forEach(k=>{if(r[k])c[k]=String(r[k])});if(Array.isArray(r.strengths))c.strengths=r.strengths.map(String);if(Array.isArray(r.watch))c.watch=r.watch.map(String);
-   setDirty(true);renderAdmin();const d2=$('admBody').querySelector(`details.cc[data-i="${i}"]`);if(d2){d2.open=true;d2.querySelector('[data-st]').textContent='ร่างแล้ว ตรวจแก้ได้เลย'}}}
- catch(e){st.textContent=sampleErr(e)}}
+ if(isBlank(c.name)&&isBlank(c.nameTh)){st.textContent='ใส่ชื่อ Culture อย่างน้อย 1 ภาษาก่อน';return}
+ const o={nameEn:c.name||'',nameTh:c.nameTh||'',subs:c.subs||[],tags:c.tags||[],short:c.short||'',def:c.def||'',shortDef:c.shortDef||'',color:c.color||'',nick:c.nick||'',desc:c.desc||'',strengths:c.strengths||[],watch:c.watch||[],_ai:[]};
+ if(o.nameEn&&hasThai(o.nameEn)&&!o.nameTh){o.nameTh=o.nameEn;o.nameEn=''}
+ const need=needsAI(o);if(!need.length){st.textContent='ทุกช่องมีข้อมูลแล้ว';return}
+ const btn=det.querySelector('[data-act=aiText]');if(btn)btn.disabled=true;st.innerHTML='<span class="spin"></span>AI กำลังกรอก '+need.length+' ช่อง…';
+ try{const r=await sample.json(csvAiPrompt(o,need),{cache:false});const n=csvApplyAi(o,r,need);
+  if(!n){st.textContent='AI ยังกรอกไม่ได้ ลองอีกครั้ง';if(btn)btn.disabled=false;return}
+  c.name=o.nameEn||o.nameTh;c.nameTh=o.nameTh;['short','def','shortDef','nick','desc'].forEach(k=>c[k]=o[k]);c.strengths=o.strengths;c.watch=o.watch;
+  setDirty(true);renderAdmin();const d2=$('admBody').querySelector(`details.cc[data-i="${i}"]`);if(d2){d2.open=true;d2.querySelector('[data-st]').textContent='✦ AI กรอก '+n+' ช่องแล้ว ตรวจแก้ได้เลย'}}
+ catch(e){st.textContent=sampleErr(e);if(btn)btn.disabled=false}}
 function validate(d){const errs=[],cs=d.cultures;if(cs.length<MIN_C||cs.length>MAX_C)errs.push(`ต้องมี Culture ${MIN_C}–${MAX_C} ข้อ`);
  cs.forEach((c,i)=>{if(!c.name.trim())errs.push(`Culture ลำดับที่ ${i+1} ยังไม่มีชื่อ`);if(!c.def.trim())errs.push(`${c.name||'Culture ลำดับที่ '+(i+1)} ยังไม่มี Definition`)});
  const miss=missingSlots();if(miss.length)errs.push(`ชุดคำถามยังไม่ครบ ${miss.length} ข้อ (ดูแท็บชุดคำถาม)`);return errs}
