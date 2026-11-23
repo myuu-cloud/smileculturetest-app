@@ -4392,7 +4392,7 @@ const initialOf=c=>(String(c.short||c.name||'?').trim().charAt(0)||'?').toUpperC
 const CULT_COLORS=['#4fa3e0','#ff7a1a','#2c3e6b','#3fae8a','#d9467c','#1f6bff','#2e9e5b','#9762cc'];
 function nextColor(){const used=new Set(D().cultures.map(c=>String(c.color).toLowerCase()));return[...CULT_COLORS,...EXTRA_COLORS].find(x=>!used.has(x))||EXTRA_COLORS[D().cultures.length%EXTRA_COLORS.length]}
 const uid8=()=>'c'+Date.now().toString(36)+Math.random().toString(36).slice(2,6);
-function newCultureDef(f={}){const c={id:uid8(),name:'',nameTh:'',subs:[],tags:[],short:'',color:nextColor(),def:'',shortDef:'',nick:'',desc:'',strengths:[],watch:[],char:'',...f};D().cultures.push(c);return D().cultures.length-1}
+function newCultureDef(f={}){const c={id:uid8(),name:'',nameTh:'',subs:[],tags:[],short:'',color:nextColor(),colorAuto:true,def:'',shortDef:'',nick:'',desc:'',strengths:[],watch:[],char:'',...f};D().cultures.push(c);return D().cultures.length-1}
 const FILL_KEYS=['shortDef','nick','desc','strengths','watch'];
 const isBlank=v=>Array.isArray(v)?!v.length:!String(v||'').trim();
 const fillable=()=>D().cultures.filter(c=>String(c.name||'').trim()&&String(c.def||'').trim()&&FILL_KEYS.some(k=>isBlank(c[k])));
@@ -4427,7 +4427,10 @@ function mapColumns(header){const map={},taken=new Set(),keys=header.map(normKey
  for(const pass of[0,1])keys.forEach((k,ix)=>{if(taken.has(ix)||!k)return;for(const[f,al]of Object.entries(CSV_ALIASES)){if(map[f]!=null)continue;
   if(al.some(a=>pass===0?k===normKey(a):(normKey(a).length>3&&k.startsWith(normKey(a))))){map[f]=ix;taken.add(ix);return}}});return map}
 const csvKey=o=>String(o.nameEn||o.nameTh||'').trim().toLowerCase();
-const AI_KEYS=['nameEn','nameTh','short','def','shortDef','nick','desc','strengths','watch'];
+const AI_KEYS=['nameEn','nameTh','short','def','shortDef','nick','desc','strengths','watch','color'];
+const teamColors=()=>[...new Set([...D().cultures.filter(c=>!c.colorAuto).map(c=>c.color),...((ADM.csv&&ADM.csv.items)||[]).map(o=>o.color)].filter(x=>/^#[0-9a-f]{6}$/i.test(x||'')).map(x=>x.toLowerCase()))];
+// readable as a shirt and behind white text on the cream page: not too light
+const okColor=x=>{if(!/^#[0-9a-f]{6}$/i.test(x))return false;const n=parseInt(x.slice(1),16),l=(.2126*(n>>16&255)+.7152*(n>>8&255)+.0722*(n&255))/255;return l<.72};
 function analyzeCSV(text,fname){const rows=parseCSV(text);if(!rows.length)return{stage:'error',error:'ไฟล์ว่าง หรืออ่านไม่ได้ ลองบันทึกเป็น CSV (UTF-8) ใหม่'};
  let map=mapColumns(rows[0]);const hasHeader=Object.keys(map).length>0;let body=rows;
  if(hasHeader)body=rows.slice(1);else map={name:0,subs:1,tags:2};
@@ -4447,6 +4450,7 @@ function csvAiPrompt(o,need){const given={};for(const[f,l]of CSV_FIELDS){if(!isB
  const spec={nameEn:'"nameEn": ชื่อ Culture ภาษาอังกฤษ แปลจากชื่อไทย กระชับแบบค่านิยมองค์กร Title Case',nameTh:'"nameTh": ชื่อ Culture ภาษาไทย แปลจากชื่ออังกฤษ กระชับ เป็นธรรมชาติ',
   short:'"short": ชื่อสั้นภาษาอังกฤษ 1-2 คำ ไม่เกิน 14 ตัวอักษร ใช้บนปุ่ม',def:'"def": Definition ภาษาไทย 1-2 ประโยค บอกพฤติกรรมที่เห็นได้จริงในการทำงาน ครอบคลุม Subculture และ Hashtag ที่ให้มา',
   shortDef:'"shortDef": ความหมายแบบสั้นภาษาไทย ไม่เกิน 45 ตัวอักษร',nick:'"nick": ฉายาเชิงบวกภาษาไทย 2-4 คำ',desc:'"desc": 2 ประโยคภาษาไทย เขียนถึงผู้อ่านด้วยคำว่า คุณ อบอุ่นและเจาะจง',
+  color:'"color": สีประจำ Culture เป็น hex 6 หลัก เช่น #2f6fb5 เลือกสีที่สื่อความหมายของ Culture นี้ (เช่น ความไว้ใจ = น้ำเงิน, ความกล้า = ส้มแดง, การเติบโต = เขียว) สีสดชัด ไม่อ่อนจนจาง ต้องต่างชัดเจนจากสีที่ Culture อื่นใช้แล้ว: '+(teamColors().join(' ')||'ยังไม่มี'),
   strengths:'"strengths": array จุดแข็ง 3 ข้อ ภาษาไทย ข้อละไม่เกิน 40 ตัวอักษร',watch:'"watch": array เรื่องที่ลองพัฒนาได้ 2 ข้อ ภาษาไทย เขียนเชิงแนะนำ ไม่ตำหนิ'};
  return`คุณช่วย HR เตรียมข้อมูล Culture (ค่านิยม) ขององค์กร สำหรับแบบทดสอบว่าพนักงานเด่นด้าน Culture ไหน
 ข้อมูลที่ HR ให้มา ใช้เป็นบริบทเพื่อเข้าใจความหมายที่ตั้งใจ ห้ามขัดแย้งกับข้อมูลนี้:
@@ -4457,7 +4461,7 @@ ${o.subs.length?'Subculture คือพฤติกรรมย่อยที�
 ${need.map(k=>'- '+spec[k]).join('\n')}
 ไม่ใช้คำลงท้าย ครับ/ค่ะ ตอบ JSON object ที่มีเฉพาะช่องข้างบนเท่านั้น`}
 function csvApplyAi(o,r,need){if(!r||typeof r!=='object')return 0;let n=0;
- for(const k of need){let v=r[k];if(v==null)continue;if(k==='strengths'||k==='watch'){if(!Array.isArray(v))v=splitList(v);v=v.map(String).map(s=>s.trim()).filter(Boolean);if(!v.length)continue}else{v=String(v).trim();if(!v)continue}
+ for(const k of need){let v=r[k];if(v==null)continue;if(k==='color'){v=String(v).trim();if(!okColor(v))continue}else if(k==='strengths'||k==='watch'){if(!Array.isArray(v))v=splitList(v);v=v.map(String).map(s=>s.trim()).filter(Boolean);if(!v.length)continue}else{v=String(v).trim();if(!v)continue}
   if(!isBlank(o[k]))continue;o[k]=v;if(!o._ai.includes(k))o._ai.push(k);n++}return n}
 async function csvAiRun(only){const P=ADM.csv;if(!P||P.stage!=='review'||!sample||P.busy)return;
  const queue=P.items.filter(o=>(only?only.includes(o):true)&&needsAI(o).length);if(!queue.length)return;P.busy=true;P.err='';let done=0;
@@ -4551,13 +4555,13 @@ function applyCSV(){const P=ADM.csv;if(!P||!P.items||P.busy)return;const invalid
  const find=o=>[o.nameEn,o.nameTh].map(x=>x&&byKey.get(x.trim().toLowerCase())).find(Boolean);
  const fill=(c,o)=>{const set=(k,v)=>{if(!isBlank(v))c[k]=Array.isArray(v)?v.slice():v};
   set('name',o.nameEn||o.nameTh);set('nameTh',o.nameTh);for(const f of['subs','tags','short','def','shortDef','color','nick','desc','strengths','watch'])set(f,o[f]);
-  if(!c.short)c.short=o.nameEn||o.nameTh;return c};
+  if(!c.short)c.short=o.nameEn||o.nameTh;if(!isBlank(o.color))delete c.colorAuto;return c};
  const blank=()=>({id:uid8(),name:'',nameTh:'',short:'',color:'',def:'',shortDef:'',nick:'',desc:'',strengths:[],watch:[],subs:[],tags:[],char:''});
  let up=0,ad=0;
  if(P.mode==='replace'){const out=[];for(const o of P.items.slice(0,MAX_C)){const ex=find(o);if(ex&&!out.includes(ex)){fill(ex,o);out.push(ex);up++}else{out.push(fill(blank(),o));ad++}}
   D().cultures.splice(0,cs.length,...out)}
  else{for(const o of P.items){const ex=find(o);if(ex){fill(ex,o);up++}else if(D().cultures.length<MAX_C){D().cultures.push(fill(blank(),o));ad++}}}
- D().cultures.forEach(c=>{if(!c.color)c.color=nextColor()});
+ D().cultures.forEach(c=>{if(!c.color){c.color=nextColor();c.colorAuto=true}});
  ADM.csv=null;ADM.tplText=null;setDirty(true);renderAdmin();toast(`นำเข้าแล้ว · ใหม่ ${ad} · อัปเดต ${up}`)}
 const csvQ=v=>{v=String(v??'');return/[",\n;]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
 const CSV_TPL=(kind='basic')=>{let rows;
@@ -4651,7 +4655,7 @@ function admSettings(){const m=D().meta||{};return`<div class="adm-sec">
  <div class="row"><button class="btn danger sm" data-act="resetDefault">คืนค่าเริ่มต้นทั้งหมด (8 Culture เดิม)</button><span class="note">เปลี่ยนเฉพาะร่าง ต้องกดเผยแพร่อีกครั้ง</span></div></div>`}
 function wireAdmin(){const body=$('admBody');
  body.querySelectorAll('details.cc').forEach(det=>{const i=+det.dataset.i,c=D().cultures[i];
-  det.querySelectorAll('[data-f]').forEach(inp=>inp.addEventListener('input',()=>{const f=inp.dataset.f;c[f]=(f==='strengths'||f==='watch')?inp.value.split('\n').map(s=>s.trim()).filter(Boolean):f==='subs'?splitList(inp.value):f==='tags'?splitList(inp.value,true):inp.value;setDirty(true);
+  det.querySelectorAll('[data-f]').forEach(inp=>inp.addEventListener('input',()=>{const f=inp.dataset.f;if(f==='color')delete c.colorAuto;c[f]=(f==='strengths'||f==='watch')?inp.value.split('\n').map(s=>s.trim()).filter(Boolean):f==='subs'?splitList(inp.value):f==='tags'?splitList(inp.value,true):inp.value;setDirty(true);
    if(f==='name'||f==='nameTh')det.querySelector('summary b').textContent=c.name||c.nameTh||'Culture ใหม่';if(f==='shortDef')det.querySelector('summary small').textContent=c.shortDef;
    if(f==='color')det.style.setProperty('--c',c.color);if(f==='name'||f==='short')det.querySelector('summary .cdot').textContent=initialOf(c)}));
   const ai=det.querySelector('[data-act=aiText]');if(ai)ai.onclick=()=>aiCultureText(i,det);
@@ -4718,13 +4722,13 @@ function aiTextFor(c){return sample.json(`เขียนข้อความ�
 ไม่ใช้คำลงท้าย ครับ/ค่ะ`,{cache:false}).then(r=>r&&typeof r==='object'?r:null)}
 async function aiCultureText(i,det){if(!sample)return;const c=D().cultures[i],st=det.querySelector('[data-st]');
  if(isBlank(c.name)&&isBlank(c.nameTh)){st.textContent='ใส่ชื่อ Culture อย่างน้อย 1 ภาษาก่อน';return}
- const o={nameEn:c.name||'',nameTh:c.nameTh||'',subs:c.subs||[],tags:c.tags||[],short:c.short||'',def:c.def||'',shortDef:c.shortDef||'',color:c.color||'',nick:c.nick||'',desc:c.desc||'',strengths:c.strengths||[],watch:c.watch||[],_ai:[]};
+ const o={nameEn:c.name||'',nameTh:c.nameTh||'',subs:c.subs||[],tags:c.tags||[],short:c.short||'',def:c.def||'',shortDef:c.shortDef||'',color:c.colorAuto?'':(c.color||''),nick:c.nick||'',desc:c.desc||'',strengths:c.strengths||[],watch:c.watch||[],_ai:[]};
  if(o.nameEn&&hasThai(o.nameEn)&&!o.nameTh){o.nameTh=o.nameEn;o.nameEn=''}
  const need=needsAI(o);if(!need.length){st.textContent='ทุกช่องมีข้อมูลแล้ว';return}
  const btn=det.querySelector('[data-act=aiText]');if(btn)btn.disabled=true;st.innerHTML='<span class="spin"></span>AI กำลังกรอก '+need.length+' ช่อง…';
  try{const r=await sample.json(csvAiPrompt(o,need),{cache:false,title:'เขียนข้อมูล Culture '+(o.nameTh||o.nameEn)});const n=csvApplyAi(o,r,need);
   if(!n){st.textContent='AI ยังกรอกไม่ได้ ลองอีกครั้ง';if(btn)btn.disabled=false;return}
-  c.name=o.nameEn||o.nameTh;c.nameTh=o.nameTh;['short','def','shortDef','nick','desc'].forEach(k=>c[k]=o[k]);c.strengths=o.strengths;c.watch=o.watch;
+  c.name=o.nameEn||o.nameTh;c.nameTh=o.nameTh;['short','def','shortDef','nick','desc'].forEach(k=>c[k]=o[k]);c.strengths=o.strengths;c.watch=o.watch;if(o.color&&o.color!==c.color){c.color=o.color;delete c.colorAuto};
   setDirty(true);renderAdmin();const d2=$('admBody').querySelector(`details.cc[data-i="${i}"]`);if(d2){d2.open=true;{const st2=d2.querySelector('[data-st]');st2.innerHTML='✦ AI กรอก '+n+' ช่องแล้ว ตรวจแก้ได้เลย'+(hasChar(c)?'':' · <button class="link" data-go="chars">ไปขั้นที่ 2 สร้างตัวละคร →</button>');const g=st2.querySelector('[data-go]');if(g)g.onclick=()=>goTab('chars')}}}
  catch(e){st.textContent=sampleErr(e);if(btn)btn.disabled=false}}
 function validate(d){const errs=[],cs=d.cultures;if(cs.length<MIN_C||cs.length>MAX_C)errs.push(`ต้องมี Culture ${MIN_C}–${MAX_C} ข้อ`);
