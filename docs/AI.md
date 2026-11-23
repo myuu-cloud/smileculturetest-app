@@ -30,4 +30,4 @@ The buttons switch to one-click on their own. Removing the key switches back to 
 ## History
 
 - `e548810` (tag `ai-api-only`): last version with API-only AI. Without a key every AI button was hidden.
-- `f184dfc`: added Mode B (copy / paste) as the fallback when there is no key. After a Culture fill, the dialog goes straight on to design that Culture's character.
+- `f184dfc`: added Mode B (copy / paste) as the fallback when there is no key. After a Culture fill, a "go to step 2" link leads to the Characters tab, where its AI buttons design the character.

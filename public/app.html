@@ -4707,11 +4707,10 @@ async function aiCultureText(i,det){if(!sample)return;const c=D().cultures[i],st
  if(o.nameEn&&hasThai(o.nameEn)&&!o.nameTh){o.nameTh=o.nameEn;o.nameEn=''}
  const need=needsAI(o);if(!need.length){st.textContent='ทุกช่องมีข้อมูลแล้ว';return}
  const btn=det.querySelector('[data-act=aiText]');if(btn)btn.disabled=true;st.innerHTML='<span class="spin"></span>AI กำลังกรอก '+need.length+' ช่อง…';
- try{const r=await sample.json(csvAiPrompt(o,need),{cache:false,title:'ขั้นที่ 1: เขียนข้อมูล Culture '+(o.nameTh||o.nameEn)});const n=csvApplyAi(o,r,need);
+ try{const r=await sample.json(csvAiPrompt(o,need),{cache:false,title:'เขียนข้อมูล Culture '+(o.nameTh||o.nameEn)});const n=csvApplyAi(o,r,need);
   if(!n){st.textContent='AI ยังกรอกไม่ได้ ลองอีกครั้ง';if(btn)btn.disabled=false;return}
   c.name=o.nameEn||o.nameTh;c.nameTh=o.nameTh;['short','def','shortDef','nick','desc'].forEach(k=>c[k]=o[k]);c.strengths=o.strengths;c.watch=o.watch;
-  setDirty(true);renderAdmin();const d2=$('admBody').querySelector(`details.cc[data-i="${i}"]`);if(d2){d2.open=true;d2.querySelector('[data-st]').textContent='✦ AI กรอก '+n+' ช่องแล้ว ตรวจแก้ได้เลย'}
-  if(!hasChar(c)&&c.def&&liveEng){try{await aiDesignChar(i);renderAdmin();toast('สร้างตัวละครของ '+(c.short||c.name)+' แล้ว แต่งต่อได้ในแท็บตัวละคร')}catch(e){if(!e||e.code!=='cancelled')toast(aiCharErr(e))}}}
+  setDirty(true);renderAdmin();const d2=$('admBody').querySelector(`details.cc[data-i="${i}"]`);if(d2){d2.open=true;{const st2=d2.querySelector('[data-st]');st2.innerHTML='✦ AI กรอก '+n+' ช่องแล้ว ตรวจแก้ได้เลย'+(hasChar(c)?'':' · <button class="link" data-go="chars">ไปขั้นที่ 2 สร้างตัวละคร →</button>');const g=st2.querySelector('[data-go]');if(g)g.onclick=()=>goTab('chars')}}}
  catch(e){st.textContent=sampleErr(e);if(btn)btn.disabled=false}}
 function validate(d){const errs=[],cs=d.cultures;if(cs.length<MIN_C||cs.length>MAX_C)errs.push(`ต้องมี Culture ${MIN_C}–${MAX_C} ข้อ`);
  cs.forEach((c,i)=>{if(!c.name.trim())errs.push(`Culture ลำดับที่ ${i+1} ยังไม่มีชื่อ`);if(!c.def.trim())errs.push(`${c.name||'Culture ลำดับที่ '+(i+1)} ยังไม่มี Definition`)});
