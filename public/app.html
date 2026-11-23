@@ -4956,7 +4956,9 @@ const manualBridge=(()=>{let q=[],busy=false,el=null,lastOk=0,step=0;
   `<li><i>3</i><div><b>คัดลอกคำตอบทั้งหมดของ AI มาวางตรงนี้</b><textarea data-k="ans" placeholder="วางคำตอบที่นี่"></textarea><p class="err" data-k="err" hidden></p></div></li></ol>`+
   `<div class="acts"><button class="btn quiet sm" data-k="no">ยกเลิก</button><button class="btn primary sm" data-k="ok">ใช้คำตอบนี้</button></div></section>`;
   document.body.appendChild(el);return el}
- const parse=t=>{const m=String(t).match(/[\[{][\s\S]*[\]}]/);try{return JSON.parse(m?m[0]:t)}catch(e){return undefined}};
+ const clean=t=>{const x=document.createElement('textarea');x.innerHTML=String(t);return x.value.replace(/\u00a0/g,' ').replace(/\\\r?\n/g,'\n').replace(/```(?:json)?/gi,'').replace(/[\u201c\u201d]/g,'"').replace(/,(\s*[\]}])/g,'$1')};
+ const parse=t=>{for(const s of[String(t),clean(t)]){const m=s.match(/[\[{][\s\S]*[\]}]/);try{return JSON.parse(m?m[0]:s)}catch(e){}}return undefined};
+ const HEAD='ตอบทันทีโดยไม่ต้องถามกลับหรือขอข้อมูลเพิ่ม ถ้าข้อมูลไม่พอให้ใช้ดุลยพินิจเติมเอง ตอบเป็น JSON อย่างเดียวในบล็อกโค้ดเดียว ไม่ต้องมีคำอธิบายก่อนหรือหลัง\n\n';
  function next(){if(busy||!q.length)return;busy=true;const job=q.shift(),d=ui(),$k=k=>d.querySelector(`[data-k=${k}]`);
   const chained=Date.now()-lastOk<1500;step=chained?step+1:1;
   $k('sub').textContent=job.opts.title||'ระบบเตรียมคำสั่งให้แล้ว ใช้ AI ตัวไหนก็ได้ ฟรี';$k('ans').value='';$k('err').hidden=true;
@@ -4964,7 +4966,7 @@ const manualBridge=(()=>{let q=[],busy=false,el=null,lastOk=0,step=0;
   d.querySelector('#maiT').textContent=chained?'✦ ให้ AI ช่วย · ขั้นถัดไป':'✦ ให้ AI ช่วย';
   $k('copy').textContent='📋 คัดลอกคำสั่งให้ AI';d.hidden=false;if(chained){d.classList.add('swap');setTimeout(()=>d.classList.remove('swap'),250)}$k('copy').focus();
   const done=()=>{d.hidden=true;busy=false;setTimeout(next,q.length?350:0)};
-  $k('copy').onclick=async()=>{try{await navigator.clipboard.writeText(job.prompt)}catch(e){const t=document.createElement('textarea');t.value=job.prompt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}$k('copy').textContent='✓ คัดลอกแล้ว ไปวางในแชท AI ได้เลย'};
+  $k('copy').onclick=async()=>{try{await navigator.clipboard.writeText(HEAD+job.prompt)}catch(e){const t=document.createElement('textarea');t.value=HEAD+job.prompt;document.body.appendChild(t);t.select();document.execCommand('copy');t.remove()}$k('copy').textContent='✓ คัดลอกแล้ว ไปวางในแชท AI ได้เลย'};
   $k('ok').onclick=()=>{if(!$k('ans').value.trim()){$k('err').textContent='ยังไม่ได้วางคำตอบ คัดลอกคำตอบของ AI มาวางในช่องด้านบนก่อน';$k('err').hidden=false;return}const r=parse($k('ans').value);if(r===undefined||r===null){$k('err').textContent='อ่านคำตอบไม่ได้ ให้คัดลอกคำตอบของ AI มาทั้งหมด (ต้องมีวงเล็บ { } หรือ [ ])';$k('err').hidden=false;return}lastOk=Date.now();done();toast('✓ ใช้คำตอบแล้ว');job.res(r)};
   const cancel=()=>{const all=[job,...q];q=[];done();all.forEach(j=>j.rej({code:'cancelled'}))};
   $k('no').onclick=cancel;d.querySelector('.sbg').onclick=cancel;
